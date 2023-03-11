@@ -1,4 +1,5 @@
 import sys
+from bisect import bisect_left, bisect_right
 
 input = sys.stdin.readline
 
@@ -11,29 +12,12 @@ compare = list(map(int, input().split()))
 origin.sort()
 
 
-def binary_search(key, start, end):
-    # 투 포인터 생각
-    cnt = 1
-    while start <= end:
-        mid = (start + end) // 2
-
-        if origin[mid] > key:
-            end = mid - 1
-        elif origin[mid] < key:
-            start = mid + 1
-        elif origin[mid] == key:
-            next_cnt = mid
-            while next_cnt + 1 <= end and origin[next_cnt + 1] == key:
-                cnt += 1
-                next_cnt += 1
-            next_cnt = mid
-            while next_cnt - 1 >= start and origin[next_cnt - 1] == key:
-                cnt += 1
-                next_cnt -= 1
-            return cnt
-
-    return 0
+# bisect 함수 이용해서 해결
+def count_bisect(key):
+    right_index = bisect_right(origin, key)
+    left_index = bisect_left(origin, key)
+    return right_index - left_index
 
 
-for i in range(M):
-    print(binary_search(compare[i], 0, N - 1))
+for num in compare:
+    print(count_bisect(num), end=" ")
