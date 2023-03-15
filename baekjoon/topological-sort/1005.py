@@ -26,13 +26,15 @@ for _ in range(T):
         if indegree[i] == 0:
             q.append(i)
 
+    # 같은 부모한테 시작한 애들은
     while q:
         cur = q.popleft()
-        time_sum += time[cur - 1]
 
         for v in graph[cur]:
             indegree[v] -= 1
             if indegree[v] == 0:
                 q.append(v)
+
+        time_sum += time[cur - 1]
 
     print(time_sum)
